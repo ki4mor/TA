@@ -1,0 +1,86 @@
+%class AutomataAnalyzer
+
+%start MainMap::Start
+
+%map MainMap
+%%
+
+Default {
+	Start			Start		{ ClearSMC(); }
+	Letter (ch: String)	Error		{ Unacceptable(); }
+	Digit (ch: String)	Error		{ Unacceptable(); }
+	SpaceS			Error		{ Unacceptable(); }
+	DotS			Error		{ Unacceptable(); }
+	Unknown			Error		{ Unacceptable(); }
+	EOS			Error		{ Unacceptable(); }
+}
+
+Start {
+	SpaceS			Start		{}
+	Letter (ch: String)	Name 		{ InsToBuf(ch); IncLength(); }
+}
+
+Space_before_type {
+	SpaceS			Space_before_type	{}
+	Letter (ch: String) 	Type			{ InsToBuf(ch); }
+	
+}
+
+Name {
+	Letter (ch: String) [ctxt.LessThan32()]		nil			{ InsToBuf(ch); IncLength(); }
+	Digit (ch: String) [ctxt.LessThan32()]		nil			{ InsToBuf(ch); IncLength(); }
+	SpaceS [ctxt.LessThan32()]			Space_before_type 	{ InsName(); ClearBuf(); ClearLength(); }	
+}
+
+Type {  
+	SpaceS [ctxt.CheckTypeA()]		Space_after_type_A		{ InsType(); ClearBuf(); }
+	SpaceS [ctxt.CheckTypeC()]		Space_after_type_C		{ InsType(); ClearBuf(); }
+}
+
+
+Space_after_type_A {
+	SpaceS			Space_after_type_A		{}
+	Digit (ch: String)	Number				{InsToBuf(ch); InsCount(); }
+}
+
+Space_after_type_C {
+	SpaceS			Space_after_type_C		{}
+	Letter (ch: String)	Name_of_resource		{ InsToBuf(ch); IncLength(); }
+	
+}
+
+Number {
+	Digit (ch: String)			Number		{ InsToBuf(ch);  }
+	DotS	[ctxt.CheckNumber()]		Dot		{ ClearBuf(); }
+	SpaceS	[ctxt.CheckCount()]		Space		{}					
+	EOS	[ctxt.CheckCount()]		OK		{ Acceptable(); }
+}
+
+Dot {
+	Digit (ch:String)			Number		{ InsCount(); InsToBuf(ch); }
+}
+
+Name_of_resource {
+	Letter (ch: String) [ctxt.LessThan32()]		nil			{ InsToBuf(ch); IncLength(); }
+	Digit (ch: String) [ctxt.LessThan32()]		nil			{ InsToBuf(ch); IncLength(); }
+	SpaceS [ctxt.LessThan32()]			Space			{ InsNameOfRes();}
+	EOS [ctxt.LessThan32()]				OK			{ InsNameOfRes(); Acceptable(); }
+}
+
+Space{
+	SpaceS		Space		{}
+	EOS		OK		{ Acceptable(); }
+}
+
+Error {
+
+    EOS         nil             { Unacceptable(); }
+
+}
+
+OK {
+
+    EOS         nil             { Acceptable(); }
+
+}
+%%	 	
