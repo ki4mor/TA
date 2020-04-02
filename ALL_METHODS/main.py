@@ -16,17 +16,33 @@ while True:
     if c.isdigit():
         choice = int(c)
         if choice == 1:
-            print('Enter the string: ')
+            print('Enter string: ')
             _str = input()
-            print('RegEx result:', Regular.check(_str).rstrip('\n'))
-            print(' SMC  result:', SMC.SMCconsolecheck(_str).rstrip('\n'))
-            print(' PLY  result:', PLY_Check.PLYconsolecheck(_str))
+            print('Make your choice: ')
+            print('1. Check with all methods')
+            print('2. Check with RegEx')
+            print('3. Check with SMC')
+            print('4. Check with PLY')
+            k = input()
+            _choice = int(k)
+            if _choice == 1:
+                print('RegEx result:', Regular.consolecheck(_str).rstrip('\n'))
+                print(' SMC  result:', SMC.SMCconsolecheck(_str).rstrip('\n'))
+                print(' PLY  result:', PLY_Check.PLYconsolecheck(_str))
+            elif _choice == 2:
+                print('RegEx result:', Regular.consolecheck(_str).rstrip('\n'))
+            elif _choice == 3:
+                print(' SMC  result:', SMC.SMCconsolecheck(_str).rstrip('\n'))
+            elif _choice == 4:
+                print(' PLY  result:', PLY_Check.PLYconsolecheck(_str))
+            else:
+                print('Wrong choice')
         elif choice == 2:
             print('Enter count of string: ')
             while True:
-                _numstr = input()
-                if _numstr.isdigit():
-                    _num = int(_numstr)
+                _buf = input()
+                if _buf.isdigit():
+                    _num = int(_buf)
                     break
                 else:
                     print('Wrong choice!')
@@ -40,7 +56,7 @@ while True:
         elif choice == 0:
             break
         else:
-            print('Wrong choice!')
+            print('Wrong choice')
     else:
-        print('Wrong choice!')
+        print('Wrong choice')
 print('Bye Bye')

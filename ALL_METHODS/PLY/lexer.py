@@ -12,10 +12,10 @@ class Lexer:
    # t_IP = r'([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})'
 
     states = (
-        ('name', 'exclusive'),
+       # ('name', 'exclusive'),
         ('type', 'exclusive'),
         ('resname', 'exclusive'),
-        ('ip', 'exclusive')
+        #('ip', 'exclusive')
     )
 
     def __init__(self):
@@ -43,13 +43,13 @@ class Lexer:
 
     def t_type_TYPE_A(self, t):
         r'([A]{1})(\s+)'
-        t.lexer.begin('ip')
+        t.lexer.begin('INITIAL')
         return t
     def t_resname_RESNAME(self, t):
         r'([a-zA-Z]{1}[a-zA-Z0-9]{0,31})'
         return t
 
-    def t_ip_IP(self, t):
+    def t_IP(self, t):
         r'([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})'
         return t
 
@@ -71,7 +71,7 @@ class Lexer:
 
 
 # data = '''           abc    C             dsfdsfsd
-# xer A 229.321.312.111
+# fdg A 229.321.312.111
 # '''
 # l = Lexer()
 # l.input(data)

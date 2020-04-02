@@ -4,14 +4,6 @@ import time
 import os.path
 
 
-def SMCconsolecheck(str):
-    statemachine = AutomataAnalyzer.AutomataAnalyzer()
-    match = statemachine.Check(str)
-    if match:
-        return str.rstrip('\n') + ' --- Correct\n'
-    else:
-        return str.rstrip('\n') + ' --- Incorrect\n'
-
 
 def SMCfilecheck():
     StatFile = open('SMCStatistic.txt', 'w')
@@ -31,9 +23,9 @@ def SMCfilecheck():
         if match:
             if statemachine.GetType() == 'C':
                 if statemachine.GetNameRes() in names and statemachine.GetName() in names[statemachine.GetNameRes()]:
-                    outf.write(_string.rstrip('\n') + '  --- Incorrect\n')
+                    outf.write(_string.rstrip('\n') + ' --- Incorrect\n')
                 else:
-                    outf.write(_string.rstrip('\n') + '  --- Correct\n')
+                    outf.write(_string.rstrip('\n') + ' --- Correct\n')
                     if statemachine.GetName() not in names:
                         names[statemachine.GetName()] = []
                         names[statemachine.GetName()].append(statemachine.GetNameRes())
@@ -41,7 +33,7 @@ def SMCfilecheck():
                         if statemachine.GetNameRes() not in names[statemachine.GetName()]:
                             names[statemachine.GetName()].append(statemachine.GetNameRes())
             else:
-                outf.write(_string.rstrip('\n') + '  --- Correct\n')
+                outf.write(_string.rstrip('\n') + ' --- Correct\n')
         else:
             outf.write(_string.rstrip('\n') + ' --- Incorrect\n')
 
@@ -58,3 +50,12 @@ def SMCfilecheck():
     StatFile.close()
     inf.close()
     outf.close()
+
+
+def SMCconsolecheck(str):
+    statemachine = AutomataAnalyzer.AutomataAnalyzer()
+    match = statemachine.Check(str)
+    if match:
+        return str.rstrip('\n') + ' --- Correct\n'
+    else:
+        return str.rstrip('\n') + ' --- Incorrect\n'

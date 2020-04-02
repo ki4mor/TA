@@ -3,25 +3,6 @@ import time
 
 
 
-
-def check(_str):
-    _str = _str.strip(' ')
-    _reg = r'^([a-zA-Z]{1}[a-zA-Z0-9]{0,31})(\s+)((([C]{1})(\s+1)([a-zA-Z]{1}'
-    _reg += r'[a-zA-Z0-9]{0,31}))|(([A]{1})(\s)(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))))$'
-    _res = re.match(_reg, _str)
-
-    if _res is not None:
-        if _res.group(9) == 'A':
-            if int(_res.group(12)) <= 255 and int(_res.group(13)) <= 255 and int(
-                    _res.group(14)) <= 255 and int(_res.group(15)) <= 255:
-                return _str.rstrip('\n') + '  --- Correct\n'
-            else:
-                return _str.rstrip('\n') + '  --- Incorrect\n'
-        else:
-            return _str.rstrip('\n') + '  --- Correct\n'
-    else:
-        return _str.rstrip('\n') + '  --- Incorrect\n'
-
 def CheckFromFile():
     StatFile = open('RegExStatistic.txt', 'w')
     _gnrttime = time.time()
@@ -35,18 +16,15 @@ def CheckFromFile():
             break
 
         _regular = r'^([a-zA-Z]{1}[a-zA-Z0-9]{0,31})(\s+)((([C]{1})(\s)([a-zA-Z]{1}'
-        _regular += r'[a-zA-Z0-9]{0,31}))|(([A]{1})(\s+)(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))))$'
+        _regular += r'[a-zA-Z0-9]{0,31}))|(([A]{1})(\s+)(([0-9]|[1-9][0-9]|[1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5])\.)'
+        _regular += r'{3}([0-9]|[1-9][0-9]|[1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5])))$'
         _string = _string.strip('\n')
         _string = _string.strip(' ')
         _result = re.match(_regular, _string)
 
         if _result is not None:
             if _result.group(9) == 'A':
-                if int(_result.group(12)) <= 255 and int(_result.group(13)) <= 255 and int(
-                        _result.group(14)) <= 255 and int(_result.group(15)) <= 255:
-                    outf.write(_string.rstrip('\n') + ' --- Correct\n')
-                else:
-                    outf.write(_string.rstrip('\n') + ' --- Incorrect\n')
+                outf.write(_string.rstrip('\n') + ' --- Correct\n')
             if _result.group(5) == 'C':
                 if _result.group(7) in names and _result.group(1) in names[_result.group(7)]:
                     outf.write(_string.rstrip('\n') + ' --- Incorrect\n')
@@ -77,3 +55,23 @@ def CheckFromFile():
     StatFile.close()
     inf.close()
     outf.close()
+
+
+
+def consolecheck(_str):
+    _str = _str.strip(' ')
+    _reg = r'^([a-zA-Z]{1}[a-zA-Z0-9]{0,31})(\s+)((([C]{1})(\s)([a-zA-Z]{1}'
+    _reg += r'[a-zA-Z0-9]{0,31}))|(([A]{1})(\s+)(([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3}))))$'
+    _res = re.match(_reg, _str)
+
+    if _res is not None:
+        if _res.group(9) == 'A':
+            if int(_res.group(12)) <= 255 and int(_res.group(13)) <= 255 and int(
+                    _res.group(14)) <= 255 and int(_res.group(15)) <= 255:
+                return _str.rstrip('\n') + '  --- Correct\n'
+            else:
+                return _str.rstrip('\n') + '  --- Incorrect\n'
+        else:
+            return _str.rstrip('\n') + '  --- Correct\n'
+    else:
+        return _str.rstrip('\n') + '  --- Incorrect\n'
